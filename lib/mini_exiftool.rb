@@ -313,8 +313,14 @@ class MiniExiftool
 
   def parse_output
     @output.each_line do |line|
-      tag, value = parse_line line
-      set_value tag, value
+      begin
+        tag, value = parse_line line
+        set_value tag, value
+      rescue ArgumentError
+        # skip line
+        # this fix 'invalid byte sequence in UTF-8' for line with invalid encoding in ruby 1.9
+      end
+      
     end
   end
 
