@@ -19,6 +19,7 @@ require 'pstore'
 require 'set'
 require 'shellwords'
 require 'time'
+require 'iconv'
 
 # Simple OO access to the Exiftool command-line application.
 class MiniExiftool
@@ -317,7 +318,9 @@ class MiniExiftool
         tag, value = parse_line line
         set_value tag, value
       rescue ArgumentError
-        # skip line
+        Iconv.conv('utf-8//IGNORE', 'utf-8', line)
+        tag, value = parse_line line
+        set_value tag, value
         # this fix 'invalid byte sequence in UTF-8' for line with invalid encoding in ruby 1.9
       end
       
