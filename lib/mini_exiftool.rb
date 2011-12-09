@@ -318,7 +318,7 @@ class MiniExiftool
         tag, value = parse_line line
         set_value tag, value
       rescue ArgumentError
-        Iconv.conv('utf-8//IGNORE', 'utf-8', line)
+        line = Iconv.conv('utf-8//IGNORE', 'utf-8', line)
         tag, value = parse_line line
         set_value tag, value
         # this fix 'invalid byte sequence in UTF-8' for line with invalid encoding in ruby 1.9
